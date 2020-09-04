@@ -5,7 +5,7 @@ import InputBox from './InputBox';
 function InputPanel() {
 
     return (
-        <Panel childs={<InputBox />} />
+        <Panel addable childs={<InputBox/>} />
     );
 }
 

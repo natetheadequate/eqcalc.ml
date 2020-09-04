@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { BoxAppender } from './BoxAppender';
+import PropTypes from 'prop-types';
+import styles from '/Column.module.css';
 
-function Column(props) {
-    const [children, setChildren] = useState(props.children);
+function Column({children}) {
     return (
-        <div>
+        <div class="Column">
             {children}
-            <button type="button" onClick={props.setInput("hi")}>Test</button>
-            {props.userAddable}
         </div>
     )
 }
 
-export { Column }
+export default Column;

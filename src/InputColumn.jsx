@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Column } from './Column.jsx';
-import { InputBox } from './input-box.jsx';
-import { InputBoxAdder } from './InputBoxAppender.jsx'
+import React from 'react';
+import Panel from './Panel';
+import InputPanel from './InputPanel';
+import BoxAppender from './BoxAppender';
 
-function InputColumn(props) {
+function InputColumn() {
     return (
-        <>
-            {props.children}
-        </>
+        <Panel addable childs={<InputPanel /> } />
+        <BoxAppender 
     );
 }
 
-export { InputColumn }
+export default InputColumn;
