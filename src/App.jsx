@@ -5,6 +5,7 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { lightBlue, teal, orange, pink, yellow, green, lightGreen } from '@material-ui/core/colors';
 import StyledAppBar from './StyledAppBar';
+import SettingsPaper from './SettingsPaper';
 
 function App() {
     const defaultThemeLight = createMuiTheme({
@@ -21,10 +22,14 @@ function App() {
             },
         }
     })
-    const [theme, setTheme] = useState({palette: {
-        primary: undefined
-    }});
+    const [theme, setTheme] = useState({
+        palette: {
+            primary: undefined
+        }
+    });
     const defaultTheme = useMediaQuery('(prefers-color-scheme: dark)') ? defaultThemeDark : defaultThemeLight;// when this line first runs, it is light mode always. Then the media query updates
+
+    const [settingsPaperOpen, setSettingsPaperOpen] = useState(false);
     return (
         <ThemeProvider theme={defaultTheme}>
             <ThemeProvider theme={(outerTheme) => createMuiTheme({
@@ -35,7 +40,8 @@ function App() {
                 },
             })}>
                 <CssBaseline>
-                    <StyledAppBar>adsfsdf</StyledAppBar>
+                    <StyledAppBar openSettings={() => setSettingsPaperOpen} />
+                    {(settingsPaperOpen) && <SettingsPaper settings={{ 'theme': [theme, setTheme] }} close={() => setSettingsPaperOpen(false)} />}
                 </CssBaseline>
             </ThemeProvider>
         </ThemeProvider>

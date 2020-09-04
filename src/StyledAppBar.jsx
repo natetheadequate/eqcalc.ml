@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { withStyles, AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
-import SettingsIcon from '@material-ui/icons/Settings'
+import { withStyles, AppBar, Toolbar, Typography, IconButton, Paper } from '@material-ui/core';
+import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsPaper from './SettingsPaper';
 
 
 const styles = {
@@ -10,15 +11,14 @@ const styles = {
     }
 
 }
-function MyAppBar(props) {
-    const { classes } = props;
+function MyAppBar({ classes, openSettings }) {
     return (
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" component="h1">
                     Gcalc
                 </Typography>
-                <IconButton className={classes.SettingsIcon} aria-label="Settings Button">
+                <IconButton onClick={openSettings()} className={classes.SettingsIcon} aria-label="Settings Button">
                     <SettingsIcon />
                 </IconButton>
             </Toolbar>
