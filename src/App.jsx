@@ -40,7 +40,7 @@ function App() {
                 },
             })}>
                 <CssBaseline>
-                    <StyledAppBar openSettings={() => setSettingsPaperOpen} />
+                    <StyledAppBar openSettings={() => setSettingsPaperOpen(true)} />
                     {(settingsPaperOpen) && <SettingsPaper settings={{ 'theme': [theme, setTheme] }} close={() => setSettingsPaperOpen(false)} />}
                 </CssBaseline>
             </ThemeProvider>

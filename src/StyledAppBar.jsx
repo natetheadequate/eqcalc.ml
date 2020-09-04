@@ -18,7 +18,7 @@ function MyAppBar({ classes, openSettings }) {
                 <Typography variant="h6" component="h1">
                     Gcalc
                 </Typography>
-                <IconButton onClick={openSettings()} className={classes.SettingsIcon} aria-label="Settings Button">
+                <IconButton onClick={()=>openSettings()} className={classes.SettingsIcon} aria-label="Settings Button">
                     <SettingsIcon />
                 </IconButton>
             </Toolbar>
