@@ -1,17 +1,24 @@
 import React from 'react';
-import { withStyles, Button } from '@material-ui/core';
+import { withStyles, Button, IconButton, Paper } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/CloseRounded';
 
 const styles = {
     root: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%'
+        float: 'right',
+        width: '80%'
+    },
+    closeButton: {
+        float: 'right',
     }
 }
-function SettingsPaper({ close }) {
+function SettingsPaper({ classes, close, settings }) {
 
     return (
-        <Button onClick={()=>close()} className="root">Hello</Button>
+        <Paper className={classes.root}>
+            <IconButton onClick={() => close()} variant='secondary' className={classes.closeButton}>
+                <CloseIcon />
+            </IconButton>
+        </Paper >
     );
 }
 
