@@ -1,13 +1,11 @@
 import React from 'react';
 import Panel from './Panel';
-import InputPanel from './InputPanel';
+import InputBox from './InputBox';
 import BoxAppender from './BoxAppender';
 
-function InputColumn() {
+function InputColumn({ inputs, setInputs }) {
     return (
-        <Panel addable childs={<InputPanel /> } />
-        <BoxAppender 
+        <Panel addable value={inputs} setValue={setInputs} Childs={InputBox} />
     );
 }
-
 export default InputColumn;

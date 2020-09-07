@@ -1,59 +1,79 @@
-import React, { useReducer } from 'react';
-import PropTypes from 'prop-types';
-import BoxAppender from './BoxAppender'
-import PanelContext from './PanelContext';
-import styles from './Panel.module.css';
-import { useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import PropTypes, { string } from 'prop-types';
+import { withStyles } from '@material-ui/core';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import BoxAppender from './BoxAppender';
 
-function ChildManager({state, action,defaultpayload}) {
-    if(defaultpayload) {const defaultpayload=useState(defaultpayload);}
-    const [availableIndexes,setAvailableIndexes]=useState([]);
-    switch (action.type) {
-        case 'remove':
-            availableIndexes.push(action.payload.index)
-        case 'add':
-            return [state, action.payload. || defaultpayload.props=availableIndexes[0]||values.length];
-        case 'set':
-            return [action.payload || defaultpayload];
-        default:
-            return "aerr";
-
+const styles = {
+    root: {
+        maxWidth: 'min-content',
+        padding: '5px'
     }
 }
-function Panel({ childs, addable, value}) {//value is the current value of just this panel and a fn to change just this panels value
-    /* 
-   <s> So I could make there be a function that allows the panelChildren to get a reindex. The indexes of each are stored in a variable here so they can be reindexed if an input box is knocked off
-    why does the index matter the display doesnt have to mirror the way things are arranged back here
-    just have an array which stores the input values and when a new one is added, it goes on the end, regardless of if there is a new spot.
-    or i could make a stack of removed indeces that is read for the first element (latest removed) and then chuck it there. Regardless, its display place should be just 
-    have array cleaning be a task pushed to the event loop, but otherwise gut the index when the element is deleted</s>
-    
-    no just make everything cosmetic on the outside even the center column
-    */
-    const [values,setValues]=value?value:useState([]);
-    const updateAValue=({newvalue,index})=>{
-        setValues(values.map((value,i)=>{
-            i==index?newvalue:value;
-        }))
+function Panel({ classes, addable, value, setValue, Childs }) {
+    const updateAValue = useCallback((newValue, i) => {
+        setValue(() => {
+            const valu = value.concat();// so i can work on a new array not a reference to value which is immutable 
+            valu[i] = newValue;  // a removed node is set to null
+            return valu;
+        })
+    }, [value, setValue]);
+    const [orderOfValue, setOrderOfValue] = useState([0]);
+    useEffect(() => {// when value changes, orderOfValue is updated with new index at then end
+        setOrderOfValue(orderOfValue.concat(value.filter((v, i) => {
+            return orderOfValue.indexOf(i) === -1;
+        })))
+    }, [value]);
+    const onDragEnd = (result) => {
+        if (!result.destination) {
+            return;
+        }
+        const newOrder = orderOfValue.concat();
+        const [draggedIndex] = newOrder.splice(result.source.index, 1);// the index according to value that was dragged.
+        setOrderOfValue(newOrder.splice(result.destination.index, draggedIndex));
     }
-    const [panelChildren, dispatchPanelChildren] = useReducer(ChildManager({defaultpayload:<InputBox />}), childs);
-    //panel children can be an object of different things. Thus it can transmit messages like index
-
-    return ( 
-        <div className={styles.a}>
-            {values.map(v,i=>
-                <childs changeValue={(newValue)=>{updateAValue(newValue,i)} }/>//null will mean removal
-            )}
-            <BoxAppender add={updateMyValue('',values.length)} />
+    return (
+        <div className={classes.root}>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId='inputs'>{
+                    (provided) => (
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                            {
+                                // this array of draggables is initialized assigned all the values and setters to the value array.
+                                // even if the the superficial order changes, the values array order does not change.
+                                Array.isArray(orderOfValue.current) && Array.isArray(value) && orderOfValue.current.map((i) => {
+                                    /* i represents the index in the value array that is being rendered.
+                                        Thus it is possible to reorder the array by changing the order of the indices in the orderOfValues array
+                                    */
+                                    if (value[i] != null) {
+                                        return (<Draggable draggableId={i}>
+                                            {(provided2) => (
+                                                // eslint-disable-next-line react/jsx-props-no-spreading
+                                                <div style={provided2.draggableProps.style} ref={provided2.innerRef} {...provided2.draggableProps} {...provided2.dragHandleProps}  >
+                                                    <Childs key={i} value={value[i]} setValue={(newValue) => { updateAValue(newValue, i) }} />
+                                                </div> // null will mean removal
+                                            )}
+                                        </Draggable>)
+                                    } return 'Error';
+                                })
+                            }
+                        </div>
+                    )
+                }</Droppable>
+            </DragDropContext>
+            {addable && <BoxAppender add={() => updateAValue('', value.length)} />}
         </div>
     )
 }
 Panel.propTypes = {
-    childs: PropTypes.element.isRequired,
-    addable: PropTypes.bool
+    Childs: PropTypes.func.isRequired,
+    addable: PropTypes.bool,
+    setValue: PropTypes.func.isRequired,
+    value: PropTypes.arrayOf(string).isRequired
 }
 Panel.defaultProps = {
     addable: false
 }
 
-export default Panel
+export default withStyles(styles)(Panel);
