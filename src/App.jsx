@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { green } from '@material-ui/core/colors';
 import StyledAppBar from './StyledAppBar';
 import SettingsPaper from './SettingsPaper';
-import InputColumn from './InputColumn';
+import Calculator from './Calculator';
 
 function App() {
     const defaultThemeLight = createMuiTheme({
@@ -29,8 +29,10 @@ function App() {
         }
     });
     const defaultTheme = useMediaQuery('(prefers-color-scheme: dark)') ? defaultThemeDark : defaultThemeLight;// when this line first runs, it is light mode always. Then the media query updates
-    const [inputs, setInputs] = useState(['ha','as']);
-const [settingsPaperOpen, setSettingsPaperOpen] = useState(false);
+    const settings={
+        
+    }
+    const [settingsPaperOpen, setSettingsPaperOpen] = useState(false);
 
 return (
     <ThemeProvider theme={defaultTheme}>
@@ -43,8 +45,8 @@ return (
         })}>
             <CssBaseline>
                 <StyledAppBar openSettings={() => setSettingsPaperOpen(true)} />
-                {(settingsPaperOpen) && <SettingsPaper settings={{ 'theme': [theme, setTheme] }} close={() => setSettingsPaperOpen(false)} />}
-                <InputColumn inputs={inputs} setInputs={setInputs} />
+                {(settingsPaperOpen) && <SettingsPaper settings={{settings}} close={() => setSettingsPaperOpen(false)} />}
+                <Calculator />
             </CssBaseline>
         </ThemeProvider>
     </ThemeProvider>

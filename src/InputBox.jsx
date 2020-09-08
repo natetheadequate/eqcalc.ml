@@ -1,10 +1,18 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, withStyles } from '@material-ui/core';
 
-function InputBox({value, setValue}) {
+const styles={
+    'root': {
+        width: '300px',
+        padding: '10px'
+    }
+}
+function InputBox({classes, value, setValue}) {
     return (
-        <TextField value={value} variant='filled' onChange={(e)=>setValue(e.target.value)} placeholder="Type here" />
+        <span className={classes.root}>
+            <TextField value={value} variant='filled' onChange={(e)=>setValue(e.target.value)} placeholder="Type here" />
+        </span>
     );
 }
 
-export default InputBox;
+export default withStyles(styles)(InputBox);
