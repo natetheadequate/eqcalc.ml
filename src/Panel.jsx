@@ -21,23 +21,29 @@ function Panel({ classes, addable, value, setValue, Childs }) {
     The state is now stored.
     */
     const [previousOrderOfValue, setOrderOfValue] = useState([]);// this remains even when props are reloaded, so when you add a new value, all the previous reordering doesn't go away
-    const orderOfValue = previousOrderOfValue.concat(Array.from((value.filter((v, i) =>// i want to take into account the previous order of value and any changes to the value array.
-        previousOrderOfValue.indexOf(i) === -1 // if the specified index of value doesnt already have a placement, then its key is appended to the end of previousorderofvalue. 
-    )).keys()));
+    console.debug('hi');
+    const orderOfValue = previousOrderOfValue.concat((value.map((v, i) =>// i want to take into account the previous order of value and any changes to the value array.
+        previousOrderOfValue.indexOf(i) === -1?i:null // if the specified index of value doesnt already have a placement, then its key is appended to the end of previousorderofvalue. 
+    )).filter(v=>v!==null));
     const updateAValue = (newValue, i) => {
-        const valu = value.concat();// so i can work on a new array not a reference to value which is immutable 
+        const valu = value.concat([]);// so i can work on a new array not a reference to value which is immutable 
         valu[i] = newValue;  // a removed node is set to null
         console.debug(`setting value from ${value} to ${valu} because ${valu[i]} at ${i} is now ${newValue}`);
         setValue(valu);
     }
     const onDragEnd = (result) => {
-        if (!result.destination) {
+        if (!result.destination || result.destination.index===result.source.index) {
             return;
         }
-        const newOrder = orderOfValue.concat();
-        const [draggedIndex] = newOrder.splice(result.source.index, 1);// the index according to value that was dragged.
-        console.debug(`changing order from ${orderOfValue} to ${newOrder.splice(result.destination.index, draggedIndex)} with draggedindex ${draggedIndex}`)
-        setOrderOfValue(newOrder.splice(result.destination.index, draggedIndex));
+        console.debug("in onDragEnd");
+        console.debug({result,orderOfValue});
+        const newValue=Array.from(orderOfValue);
+        console.debug({newValue, result});
+        const [draggedId]=newValue.splice(result.source.index,1);
+        console.debug({draggedId,newValue});
+        newValue.splice(result.destination.index,0,draggedId);
+        console.debug({newValue})
+        setOrderOfValue(newValue);
     }
 
     return (
@@ -47,28 +53,28 @@ function Panel({ classes, addable, value, setValue, Childs }) {
                     (provided) => (
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         <div {...provided.droppableProps} ref={provided.innerRef}>
-                            {
-                                // this array of draggables is initialized assigned all the values and setters to the value array.
+                                {// this array of draggables is initialized assigned all the values and setters to the value array.
                                 // even if the the superficial order changes, the values array order does not change.
                                 orderOfValue.map((indexInValue, indexDisplayed) => {
                                     /* i represents the index in the value array that is being rendered.
                                         Thus it is possible to reorder the array by changing the order of the indices in the orderOfValues array
                                     */
-                                    console.debug(indexInValue);
-                                    console.debug(indexDisplayed);
+                                    console.debug('Called inside map function');
+                                    console.debug({indexInValue, indexDisplayed, orderOfValue});
                                     if (value[indexInValue] != null) {
-                                        return (<Draggable key={indexInValue} draggableId={indexInValue} index={indexDisplayed}>
+                                        return (<Draggable key={indexInValue.toString()} draggableId={indexInValue.toString()} index={indexDisplayed}>
                                             {(provided) => (
                                                 // eslint-disable-next-line react/jsx-props-no-spreading
                                                 <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.inputDiv} >
                                                     <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
-                                                    <button type="button" onClick={() => { console.debug(indexInValue); console.debug(indexDisplayed); console.debug(orderOfValue) }}>asdf</button>
+                                                    <button type="button" onClick={() => { console.debug('called by button'); console.debug({indexInValue,indexDisplayed,orderOfValue})}}>asdf</button>
                                                 </div> // null will mean removal
                                             )}
                                         </Draggable>)
                                     } return `Error ${value[indexInValue]}`;
                                 })
                             }
+                            {provided.placeholder}
                         </div>
                     )
                 }</Droppable>
