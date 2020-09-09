@@ -1,11 +1,12 @@
-import React, {useContext} from 'react';
-import PanelContext from './PanelContext';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function BoxAppender() {
-    const [,dispatchPanelChildren,appendee]=useContext(PanelContext);//context isnt needed use prop drilling
-    return ( 
-        <button type="button" onClick={()=>{dispatchPanelChildren({type:'add',payload:appendee})}}>+</button>
+function BoxAppender({ add }) {
+    return (
+        <button type="button" onClick={() => { add() }}>+</button>
     );
 }
-
+BoxAppender.propTypes = {
+        add: PropTypes.func.isRequired
+ }
 export default BoxAppender;

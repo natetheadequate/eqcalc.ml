@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 // import InputColumn from './InputColumn';
-import { useMediaQuery, Typography, AppBar } from '@material-ui/core';
+import { useMediaQuery } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { lightBlue, teal, orange, pink, yellow, green, lightGreen } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
 import StyledAppBar from './StyledAppBar';
 import SettingsPaper from './SettingsPaper';
+import Calculator from './Calculator';
 
 function App() {
     const defaultThemeLight = createMuiTheme({
@@ -28,24 +29,28 @@ function App() {
         }
     });
     const defaultTheme = useMediaQuery('(prefers-color-scheme: dark)') ? defaultThemeDark : defaultThemeLight;// when this line first runs, it is light mode always. Then the media query updates
-
+    const settings={
+        
+    }
     const [settingsPaperOpen, setSettingsPaperOpen] = useState(false);
-    return (
-        <ThemeProvider theme={defaultTheme}>
-            <ThemeProvider theme={(outerTheme) => createMuiTheme({
-                ...outerTheme,
-                palette: {
-                    ...outerTheme.palette,
-                    primary: theme.palette.primary ? theme.palette.primary : outerTheme.palette.primary
-                },
-            })}>
-                <CssBaseline>
-                    <StyledAppBar openSettings={() => setSettingsPaperOpen(true)} />
-                    {(settingsPaperOpen) && <SettingsPaper settings={{ 'theme': [theme, setTheme] }} close={() => setSettingsPaperOpen(false)} />}
-                </CssBaseline>
-            </ThemeProvider>
+
+return (
+    <ThemeProvider theme={defaultTheme}>
+        <ThemeProvider theme={(outerTheme) => createMuiTheme({
+            ...outerTheme,
+            palette: {
+                ...outerTheme.palette,
+                primary: theme.palette.primary ? theme.palette.primary : outerTheme.palette.primary
+            },
+        })}>
+            <CssBaseline>
+                <StyledAppBar openSettings={() => setSettingsPaperOpen(true)} />
+                {(settingsPaperOpen) && <SettingsPaper settings={{settings}} close={() => setSettingsPaperOpen(false)} />}
+                <Calculator />
+            </CssBaseline>
         </ThemeProvider>
-    );
+    </ThemeProvider>
+);
 }
 
 export default App;
