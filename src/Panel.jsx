@@ -50,19 +50,17 @@ function Panel({ classes, addable, value, setValue, Childs }) {
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         <div {...provided.droppableProps} ref={provided.innerRef}>
                             {
-                                orderOfValue.map((indexInValue, indexDisplayed) => {
+                                orderOfValue.map((indexInValue, indexDisplayed) => 
                                     (
                                         <Draggable key={indexInValue.toString()} draggableId={indexInValue.toString()} index={indexDisplayed}>
                                             {(provided) => (
-                                                // eslint-disable-next-line react/jsx-props-no-spreading
                                                 <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.inputDiv} >
                                                     <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
-                                                    <button type="button" onClick={() => { console.debug('called by button'); console.debug({ indexInValue, indexDisplayed, orderOfValue }) }}>asdf</button>
                                                 </div> // null will mean removal
                                             )}
                                         </Draggable>
                                     )
-                                })
+                                )
                             }
                             {provided.placeholder}
                         </div>
