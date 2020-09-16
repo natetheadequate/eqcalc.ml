@@ -4,7 +4,7 @@ import { useMediaQuery } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { green } from '@material-ui/core/colors';
-import StyledAppBar from './StyledAppBar';
+import TopBar from './TopBar';
 import SettingsPaper from './SettingsPaper';
 import Calculator from './Calculator';
 
@@ -44,7 +44,7 @@ return (
             },
         })}>
             <CssBaseline>
-                <StyledAppBar openSettings={() => setSettingsPaperOpen(true)} />
+                <TopBar openSettings={() => setSettingsPaperOpen(true)} />
                 {(settingsPaperOpen) && <SettingsPaper settings={{settings}} close={() => setSettingsPaperOpen(false)} />}
                 <Calculator />
             </CssBaseline>
