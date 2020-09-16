@@ -44,7 +44,7 @@ return (
             },
         })}>
             <CssBaseline>
-                <StyledAppBar openSettings={() => setSettingsPaperOpen(true)} />
+                <TitleBar openSettings={() => setSettingsPaperOpen(true)} />
                 {(settingsPaperOpen) && <SettingsPaper settings={{settings}} close={() => setSettingsPaperOpen(false)} />}
                 <Calculator />
             </CssBaseline>
