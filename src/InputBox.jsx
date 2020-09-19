@@ -1,18 +1,12 @@
 import React from 'react';
-import { TextField, withStyles } from '@material-ui/core';
+import { InputAdornment, TextField, withStyles } from '@material-ui/core';
 
-const styles={
-    'root': {
-        width: '300px',
-        padding: '10px'
-    }
-}
-function InputBox({classes, value, setValue}) {
+function InputBox({ children, value, setValue }) {
     return (
-        <span className={classes.root}>
-            <TextField value={value} variant='filled' onChange={(e)=>setValue(e.target.value)} placeholder="Type here" />
+        <span style={{ width: '100%' }}>
+            <TextField InputProps={{startAdornment: <InputAdornment style={{cursor:'grab'}} position='start'>{children}</InputAdornment> }}fullWidth value={value} variant='filled' onChange={(e) => setValue(e.target.value)} placeholder="Type here" />
         </span>
     );
 }
 
-export default withStyles(styles)(InputBox);
+export default InputBox;
