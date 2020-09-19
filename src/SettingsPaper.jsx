@@ -1,18 +1,14 @@
 import React from 'react';
-import { withStyles, Button } from '@material-ui/core';
+import { IconButton, Box } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/CloseRounded';
 
-const styles = {
-    root: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%'
-    }
-}
-function SettingsPaper({ close }) {
+function SettingsPaper({ settingsVars }) {
 
     return (
-        <Button onClick={()=>close()} className="root">Hello</Button>
+        <Box component="aside" style={{position:'absolute',right:'0'}}>
+            
+        </Box>
     );
 }
 
-export default withStyles(styles)(SettingsPaper);
+export default SettingsPaper;

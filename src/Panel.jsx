@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core';
 import PropTypes, { string } from 'prop-types';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragHandleSharp } from '@material-ui/icons';
 import BoxAppender from './BoxAppender';
+import { Icon } from '@material-ui/core';
 
-const styles = {
-    root: {
-        maxWidth: 'min-content',
-        padding: '5px',
-    },
-}
-function Panel({ classes, addable, value, setValue, Childs }) {
+function Panel({ addable, value, setValue, Childs }) {
     /* 
     orderOfValue and previousOrderOfValue are an array of integers representing indexes on the value array that was propdrilled from Calculator. 
     The indexes in orderOfValue are arranged in the order that the elements of value should be rendered to the screen. 
@@ -22,10 +17,10 @@ function Panel({ classes, addable, value, setValue, Childs }) {
     /* previousOrderOfValue is used to store past reorganization. 
     When a user drags an element to a new position, setOrderOfValue is called so the reorganization persists for another render. */
 
-    const orderOfValue = previousOrderOfValue.concat((value.map((v, i) => 
+    const orderOfValue = previousOrderOfValue.concat((value.map((v, i) =>
         previousOrderOfValue.indexOf(i) === -1 ? i : null // adding any indexes of value not in previousOrderOfValue to the end of orderOfValue (if a new Childs was added)
-    )).filter(v => v !== null));//don't include indexes which correspond to null values. That means they were removed
-    //previousOrderOfValue is no longer needed
+    )).filter(v => v !== null));// don't include indexes which correspond to null values. That means they were removed
+    // previousOrderOfValue is no longer needed
 
     const updateAValue = (newValue, i) => {// newvalue is '' for adding and null if removing
         const valu = [...value];
@@ -43,19 +38,23 @@ function Panel({ classes, addable, value, setValue, Childs }) {
     }
 
     return (
-        <div className={classes.root}>
+        <div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable key='inputs' droppableId='inputs'>{
                     (provided) => (
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         <div {...provided.droppableProps} ref={provided.innerRef}>
                             {
-                                orderOfValue.map((indexInValue, indexDisplayed) => 
+                                orderOfValue.map((indexInValue, indexDisplayed) =>
                                     (
                                         <Draggable key={indexInValue.toString()} draggableId={indexInValue.toString()} index={indexDisplayed}>
                                             {(provided) => (
-                                                <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.inputDiv} >
-                                                    <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
+                                                <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                                    <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }}>
+                                                        <Icon>
+                                                            <DragHandleSharp />
+                                                        </Icon>
+                                                    </Childs>
                                                 </div> // null will mean removal
                                             )}
                                         </Draggable>
@@ -82,4 +81,4 @@ Panel.defaultProps = {
     addable: false
 }
 
-export default withStyles(styles)(Panel);
+export default Panel;
