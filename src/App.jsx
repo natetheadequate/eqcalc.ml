@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { green } from '@material-ui/core/colors';
+import { green, lightBlue } from '@material-ui/core/colors';
 import TopBar from './TopBar';
 import SettingsPaper from './SettingsPaper';
 import Calculator from './Calculator';
@@ -12,7 +12,8 @@ function App() {
     const defaultThemeLight = createMuiTheme({
         palette: {
             type: 'light',
-            primary: green
+            primary: green,
+            secondary:lightBlue,
         }
     })
     const defaultThemeDark = createMuiTheme({
