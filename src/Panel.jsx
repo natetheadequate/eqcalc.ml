@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes, { string } from 'prop-types';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { DragHandleSharp } from '@material-ui/icons';
-import BoxAppender from './BoxAppender';
 import { Icon } from '@material-ui/core';
+import BoxAppender from './BoxAppender';
 
 function Panel({ addable, value, setValue, Childs }) {
     /* 
