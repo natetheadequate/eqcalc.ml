@@ -10,7 +10,7 @@ function TopBar({ setSettingsOpen,settingsOpen }) {
                 <Typography variant="h6" component="h1">
                     Gcalc
                 </Typography>
-                <IconButton style={{ 'margin-left': 'auto' }} onClick={() => setSettingsOpen(!settingsOpen)} aria-label="Settings Button">
+                <IconButton style={{ marginLeft: 'auto' }} onClick={() => setSettingsOpen(!settingsOpen)} aria-label="Settings Button">
                     {settingsOpen || <SettingsIcon />}
                     {settingsOpen && <CloseIcon />}
                 </IconButton>
