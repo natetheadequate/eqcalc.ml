@@ -1,10 +1,24 @@
 import React from 'react';
-import { InputAdornment, TextField, withStyles } from '@material-ui/core';
+import { Icon, IconButton, InputAdornment, TextField } from '@material-ui/core';
+import { Remove, Reorder } from '@material-ui/icons';
 
-function InputBox({ children, value, setValue }) {
+function InputBox({ value, setValue }) {
     return (
         <span style={{ width: '100%' }}>
-            <TextField InputProps={{startAdornment: <InputAdornment style={{cursor:'grab'}} position='start'>{children}</InputAdornment> }}fullWidth value={value} variant='filled' onChange={(e) => setValue(e.target.value)} placeholder="Type here" />
+            <TextField InputProps={{
+                startAdornment:
+                    <InputAdornment style={{ cursor: 'grab' }} position='start'>
+                        <Icon>
+                            <Reorder />
+                        </Icon>
+                    </InputAdornment>,
+                endAdornment:
+                    <InputAdornment position='end'>
+                        <IconButton onClick={()=>setValue(null)}>
+                            <Remove />
+                        </IconButton>
+                    </InputAdornment>
+            }} fullWidth value={value} variant='filled' onChange={(e) => setValue(e.target.value)} />
         </span>
     );
 }
