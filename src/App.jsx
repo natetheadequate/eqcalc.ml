@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import InputColumn from './InputColumn';
 import { useMediaQuery } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
