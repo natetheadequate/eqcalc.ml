@@ -1,0 +1,28 @@
+Settings:
+  Make Acccordion
+    Color and Theme
+      Dark Mode, Slider, theme.palette.type
+      Primary Color
+      Secondary Color
+    Calculation
+      Use physics pack slider
+        f=ma slider
+        mv=mv slider
+        etc
+      character to token ordering 
+      F, I, a should all be TOKENS when being used as special meaning, cuz for example 'I' can be current or moment of inertia
+  
+  
+  NEW IDEA
+    use the material color icon to select primary and secondary color, the icon to change from dark to light mode,
+    then calculator settings can be in calculator, where they belong
+  
+  More on TopBar:  Add a place for help, feedback and source
+  
+Input Box: 
+  tokenization must occur on that level so the user can select whether they want F to be a new variable or force for example.
+
+Input Panel needs to be max-height 100% and overflow scroll
+
+use client x for resizers
+        
