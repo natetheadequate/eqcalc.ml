@@ -78,7 +78,6 @@ Panel.propTypes = {
     addable: PropTypes.bool,
     setValue: PropTypes.func.isRequired,
     value: PropTypes.arrayOf(string).isRequired,
-    classes: PropTypes.arrayOf(string).isRequired
 }
 Panel.defaultProps = {
     addable: false
