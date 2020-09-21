@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Add, Undo } from '@material-ui/icons';
 import {Button} from '@material-ui/core';
 
-function Panel({ addable, value, setValue, Childs }) {
+function Panel({ addable, value, setValue, Childs, width }) {
     /* 
     orderOfValue and previousOrderOfValue are an array of integers representing indexes on the value array that was propdrilled from Calculator. 
     The indexes in orderOfValue are arranged in the order that the elements of value should be rendered to the screen. 
@@ -42,7 +42,7 @@ function Panel({ addable, value, setValue, Childs }) {
     }
 
     return (
-        <div>
+        <div style={{height:'100%',width:width}}>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable key='inputs' droppableId='inputs'>{
                     (provided) => (
@@ -76,11 +76,12 @@ function Panel({ addable, value, setValue, Childs }) {
 Panel.propTypes = {
     Childs: PropTypes.func.isRequired,
     addable: PropTypes.bool,
-    setValue: PropTypes.func.isRequired,
+    setValue: PropTypes.func,
     value: PropTypes.arrayOf(string).isRequired,
 }
 Panel.defaultProps = {
-    addable: false
+    addable: false,
+    setValue: ()=>console.log("No setValue function provided")
 }
 
 export default Panel;
