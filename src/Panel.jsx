@@ -4,7 +4,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Add, Undo } from '@material-ui/icons';
 import {Button} from '@material-ui/core';
 
-function Panel({ addable, value, setValue, Childs, width }) {
+function Panel({ addable, value, setValue, Childs }) {
     /* 
     orderOfValue and previousOrderOfValue are an array of integers representing indexes on the value array that was propdrilled from Calculator. 
     The indexes in orderOfValue are arranged in the order that the elements of value should be rendered to the screen. 
@@ -42,7 +42,7 @@ function Panel({ addable, value, setValue, Childs, width }) {
     }
 
     return (
-        <div style={{height:'100%',width:width}}>
+        <div style={{height:'100%',width:'100%'}}>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable key='inputs' droppableId='inputs'>{
                     (provided) => (

@@ -6,7 +6,7 @@ import Column from './Column';
 function InputColumn({ inputs, setInputs, width}) {
     return (
         <Column width={width}>
-            <Panel width={width} addable value={inputs} setValue={setInputs} Childs={InputBox} />
+            <Panel addable value={inputs} setValue={setInputs} Childs={InputBox} />
         </Column>
     );
 }
