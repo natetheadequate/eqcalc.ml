@@ -1,4 +1,4 @@
-# eqcalc.ml
+# EqCalc.ml
 
 Transferred from gcalc.ml after I lost that domain name.
 
