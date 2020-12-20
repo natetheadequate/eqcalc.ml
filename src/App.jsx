@@ -12,7 +12,7 @@ function App() {
         palette: {
             type: 'light',
             primary: green,
-            secondary:lightBlue,
+            secondary: lightBlue,
         }
     })
     const defaultThemeDark = createMuiTheme({
@@ -21,9 +21,13 @@ function App() {
             primary: {
                 main: '#283593',
             },
-            secondary:{
+            secondary: {
                 main: '#888800',
             },
+            background: {
+                default: '#000000',
+                paper: '#303030',
+            }
         }
     })
     const [theme, setTheme] = useState({
@@ -31,21 +35,21 @@ function App() {
             primary: undefined
         }
     });
-    const [userSelectedDarkOrLightTheme,setUserSelectedDarkOrLightTheme]=useState(createMuiTheme({
-        palette:{
+    const [userSelectedDarkOrLightTheme, setUserSelectedDarkOrLightTheme] = useState(createMuiTheme({
+        palette: {
             type: undefined
         }
     }))
     const defaultTheme = useMediaQuery('(prefers-color-scheme: dark)') ? defaultThemeDark : defaultThemeLight;// when this line first runs, it is light mode always. Then the media query updates
-    const settingsVars={
+    const settingsVars = {
         defaultTheme,
-        userSelectedDarkOrLightTheme:[userSelectedDarkOrLightTheme,setUserSelectedDarkOrLightTheme],
-        theme: [theme,setTheme],
+        userSelectedDarkOrLightTheme: [userSelectedDarkOrLightTheme, setUserSelectedDarkOrLightTheme],
+        theme: [theme, setTheme],
     }
     const [settingsPaperOpen, setSettingsPaperOpen] = useState(false);
 
-return (
-    <ThemeProvider theme={defaultTheme}>
+    return (
+        <ThemeProvider theme={defaultTheme}>
             <ThemeProvider theme={(outerTheme) => createMuiTheme({
                 ...outerTheme,
                 palette: {
@@ -55,12 +59,12 @@ return (
             })}>
                 <CssBaseline>
                     <TopBar setSettingsOpen={setSettingsPaperOpen} settingsOpen={settingsPaperOpen} />
-                    {(settingsPaperOpen) && <SettingsPaper settingsVars={{settingsVars}} close={() => setSettingsPaperOpen(false)} />}
+                    {(settingsPaperOpen) && <SettingsPaper settingsVars={{ settingsVars }} close={() => setSettingsPaperOpen(false)} />}
                     <Calculator />
                 </CssBaseline>
             </ThemeProvider>
         </ThemeProvider>
-);
+    );
 }
 
 export default App;
