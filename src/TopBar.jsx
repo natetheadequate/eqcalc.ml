@@ -8,7 +8,7 @@ function TopBar({ setSettingsOpen,settingsOpen }) {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" component="h1">
-                    Gcalc
+                    EqCalc
                 </Typography>
                 <IconButton style={{ marginLeft: 'auto' }} onClick={() => setSettingsOpen(!settingsOpen)} aria-label="Settings Button">
                     {settingsOpen || <SettingsIcon />}
