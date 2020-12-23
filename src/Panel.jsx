@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import PropTypes, { string } from 'prop-types';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Add, Undo } from '@material-ui/icons';
-import {Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 function Panel({ addable, value, setValue, Childs }) {
+    // The length of value never shrinks nor do elements change order. When an element is blank, it is empty string. When it is removed, it is null 
     /* 
     orderOfValue and previousOrderOfValue are an array of integers representing indexes on the value array that was propdrilled from Calculator. 
     The indexes in orderOfValue are arranged in the order that the elements of value should be rendered to the screen. 
@@ -13,20 +14,23 @@ function Panel({ addable, value, setValue, Childs }) {
     The state is now stored.
     */
     const [previousOrderOfValue, setOrderOfValue] = useState([]);
-    /* previousOrderOfValue is used to store past reorganization. 
+    /* previousOrderOfValue is used to store the order in which elements of value should be displayed. 
+    This includes values that are null and won't be displayed so the undo button will preserve position.
     When a user drags an element to a new position, setOrderOfValue is called so the reorganization persists for another render. */
 
+    // adding any index of value not in previousOrderOfValue gives us orderOfValue
     const orderOfValue = previousOrderOfValue.concat((value.map((v, i) =>
-        previousOrderOfValue.indexOf(i) === -1 ? i : null // adding any indexes of value not in previousOrderOfValue to the end of orderOfValue (if a new Childs was added)
-    )).filter(v => v !== null));// don't include indexes which correspond to null values. That means they were removed
-    // previousOrderOfValue is no longer needed
+        previousOrderOfValue.indexOf(i) === -1 ? i : null 
+    )).filter(v => v !== null));// get rid of all the nulls which replaced indices of value in previousOrderOfValue
 
-    const [recentlyRemoved, setRecentlyRemoved] = useState([])// stack of previous value of removed elements and index[[v,i],...] 
+    // previousOrderOfValue is no longer needed at this point in the render. order of value is now used. Orderofvalue includes the positions of deleted elements...
+    const orderOfDisplayedValue=orderOfValue.filter(v=>value[v]!==null); //... but orderOfDiplayedValues does not
+    const [recentlyRemoved, setRecentlyRemoved] = useState([])// stack of previous value of removed elements and index in "value" (the prop)[[v,i],...] 
     const updateAValue = (newValue, i) => {// newvalue is '' by default and null when an input is being removed
         const valu = [...value];
         valu[i] = newValue;
         if (newValue === null) {
-            setRecentlyRemoved([ ...recentlyRemoved, [value[i], i]]);
+            setRecentlyRemoved([...recentlyRemoved, [value[i], i]]);
         }
         setValue(valu);
 
@@ -35,10 +39,14 @@ function Panel({ addable, value, setValue, Childs }) {
         if (!result.destination || result.destination.index === result.source.index) {
             return;
         }
-        const newValue = [...orderOfValue];
-        const [draggedId] = newValue.splice(result.source.index, 1);
-        newValue.splice(result.destination.index, 0, draggedId);
-        setOrderOfValue(newValue);
+        const newOrderOfValue = [...orderOfValue];
+        const [draggedId] = newOrderOfValue.splice(
+            orderOfValue.indexOf(
+                orderOfDisplayedValue[result.source.index] //the index in "value" of the element that the dragged element is being moved above
+        ), 1);
+        newOrderOfValue.splice(orderOfValue.indexOf(orderOfDisplayedValue[result.destination.index]), 0, draggedId);
+        console.debug(newOrderOfValue);
+        setOrderOfValue(newOrderOfValue);
     }
 
     return (
@@ -49,16 +57,16 @@ function Panel({ addable, value, setValue, Childs }) {
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         <div {...provided.droppableProps} ref={provided.innerRef}>
                             {
-                                orderOfValue.filter((indexInValue)=>value[indexInValue]!==null).map((indexInValue, DisplayIndex) =>
-                                    (
-                                        <Draggable key={indexInValue.toString()} draggableId={indexInValue.toString()} index={DisplayIndex}>
-                                            {(provided) => (
-                                                <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                                    <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
-                                                </div> // null will mean removal
-                                            )}
-                                        </Draggable>
-                                    )
+                                orderOfDisplayedValue.map((indexInValue, DisplayIndex) =>
+                                (
+                                    <Draggable key={indexInValue.toString()} draggableId={indexInValue.toString()} index={DisplayIndex}>
+                                        {(provided) => (
+                                            <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                                <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
+                                            </div> // null will mean removal
+                                        )}
+                                    </Draggable>
+                                )
                                 )
                             }
                             {provided.placeholder}
@@ -66,9 +74,9 @@ function Panel({ addable, value, setValue, Childs }) {
                     )
                 }</Droppable>
             </DragDropContext>
-            {(addable || (recentlyRemoved.length>0)) && (<span style={{display:'flex'}}> 
-                {recentlyRemoved.length>0 && <Button variant='outlined' color='secondary'  onClick={()=>updateAValue(...recentlyRemoved.pop())}><Undo /></Button>}
-                {addable && <Button variant="contained" color='secondary' style={{'flexGrow':'1'}} onClick={() => { updateAValue('', value.length) }}><Add /></Button>}
+            {(addable || (recentlyRemoved.length > 0)) && (<span style={{ display: 'flex' }}>
+                {recentlyRemoved.length > 0 && <Button variant='outlined' color='secondary' onClick={() => updateAValue(...recentlyRemoved.pop())}><Undo /></Button>}
+                {addable && <Button variant="contained" color='secondary' style={{ 'flexGrow': '1' }} onClick={() => { updateAValue('', value.length) }}><Add /></Button>}
             </span>)}
         </div>
     )
