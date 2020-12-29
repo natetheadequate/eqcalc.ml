@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { addStyles } from 'react-mathquill';
 import { useMediaQuery } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,6 +9,7 @@ import SettingsPaper from './SettingsPaper';
 import Calculator from './Calculator';
 
 function App() {
+    addStyles();
     const defaultThemeLight = createMuiTheme({
         palette: {
             type: 'light',
