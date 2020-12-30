@@ -3,10 +3,10 @@ import { Icon, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import { Remove, Reorder } from '@material-ui/icons';
 import EditableMathField from 'react-mathquill';
 
-function InputBox({ value, setValue }) {
+function InputBox({ value, setValue, dragProps }) {
     return (
         <div style={{ width: '100%' }}>
-            <IconButton>
+            <IconButton {...dragProps} >
                 <Reorder />
             </IconButton>
             <EditableMathField latex={value} onChange={(mathField) => { setValue(mathField.latex()) }} />
