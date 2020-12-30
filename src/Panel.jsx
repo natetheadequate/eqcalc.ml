@@ -20,19 +20,21 @@ function Panel({ addable, value, setValue, Childs }) {
 
     // adding any index of value not in previousOrderOfValue gives us orderOfValue
     const orderOfValue = previousOrderOfValue.concat((value.map((v, i) =>
-        previousOrderOfValue.indexOf(i) === -1 ? i : null 
+        previousOrderOfValue.indexOf(i) === -1 ? i : null
     )).filter(v => v !== null));// get rid of all the nulls which replaced indices of value in previousOrderOfValue
 
     // previousOrderOfValue is no longer needed at this point in the render. order of value is now used. Orderofvalue includes the positions of deleted elements...
-    const orderOfDisplayedValue=orderOfValue.filter(v=>value[v]!==null); //... but orderOfDiplayedValues does not
+    const orderOfDisplayedValue = orderOfValue.filter(v => value[v] !== null); //... but orderOfDiplayedValues does not
     const [recentlyRemoved, setRecentlyRemoved] = useState([])// stack of previous value of removed elements and index in "value" (the prop)[[v,i],...] 
     const updateAValue = (newValue, i) => {// newvalue is '' by default and null when an input is being removed
-        const valu = [...value];
-        valu[i] = newValue;
-        if (newValue === null) {
-            setRecentlyRemoved([...recentlyRemoved, [value[i], i]]);
-        }
-        setValue(valu);
+        setValue((prev) => {
+            const valu = [...prev];
+            valu[i] = newValue;
+            if (newValue === null) {
+                setRecentlyRemoved([...recentlyRemoved, [prev[i], i]]);
+            }
+            setValue(valu);
+        })
 
     }
     const onDragEnd = (result) => {
@@ -43,7 +45,7 @@ function Panel({ addable, value, setValue, Childs }) {
         const [draggedId] = newOrderOfValue.splice(
             orderOfValue.indexOf(
                 orderOfDisplayedValue[result.source.index] //the index in "value" of the element that the dragged element is being moved above
-        ), 1);
+            ), 1);
         newOrderOfValue.splice(orderOfValue.indexOf(orderOfDisplayedValue[result.destination.index]), 0, draggedId);
         console.debug(newOrderOfValue);
         setOrderOfValue(newOrderOfValue);
