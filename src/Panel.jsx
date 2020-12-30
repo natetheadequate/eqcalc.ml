@@ -62,7 +62,7 @@ function Panel({ addable, value, setValue, Childs }) {
                                     <Draggable key={indexInValue.toString()} draggableId={indexInValue.toString()} index={DisplayIndex}>
                                         {(provided) => (
                                             <div style={provided.draggableProps.style} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                                <Childs key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
+                                                <Childs id={indexInValue} key={indexInValue} value={value[indexInValue]} setValue={(newValue) => { updateAValue(newValue, indexInValue) }} />
                                             </div> // null will mean removal
                                         )}
                                     </Draggable>
